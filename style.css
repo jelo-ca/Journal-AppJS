@@ -1,0 +1,34 @@
+/* GENERAL STYLING */
+* {
+  margin: 0;
+}
+
+/* NAV */
+#nav-bar {
+  height: 5vh;
+  background-color: beige;
+}
+
+/* HABIT TRACKER */
+#habit-tracker {
+  height: 20vh;
+  background-color: tan;
+  text-align: center;
+}
+
+.habit-tracker-grid {
+  text-align: left;
+}
+
+/* DAILY REMINDERS */
+#daily-reminders {
+  height: 25vh;
+  display: flex;
+  justify-content: space-around;
+}
+
+/* JOURNAL ENTRY */
+#journal-entry {
+  height: 50vh;
+  background-color: tan;
+}
