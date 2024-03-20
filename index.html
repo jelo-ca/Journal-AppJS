@@ -6,6 +6,12 @@
     <title>Journal</title>
     <link rel="stylesheet" href="style.css" />
     <script src="main.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <nav id="nav-bar">This is Nav</nav>
@@ -16,18 +22,17 @@
     </section>
     <section id="daily-reminders">
       <div class="gratituity">GRATITUITY</div>
-      <div class="todo-list">
+      <div class="todos">
         <h2>TODO</h2>
         <div class="todo-container">
-          <template class="todo-template">
-            <div class="todo">
-              <input type="checkbox" class="todo-complete" />
-              <input type="text" class="todo-item" />
-              <button class="todo-delete">DELETE</button>
-            </div>
-          </template>
+          <div class="todo">
+            <input type="text" class="todo-item" />
+            <button class="add-todo" onclick="addTodo()">Add Item</button>
+          </div>
+          <ul class="todo-list">
+            <!-- li go here -->
+          </ul>
         </div>
-        <button class="add-todo">Add Item</button>
       </div>
       <div class="goals">GOALS</div>
     </section>

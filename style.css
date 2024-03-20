@@ -1,6 +1,7 @@
 /* GENERAL STYLING */
 * {
   margin: 0;
+  font-family: "quattrocento sans", sans-serif;
 }
 
 /* NAV */
@@ -27,31 +28,16 @@
   justify-content: space-around;
 }
 
-/* todo list */
-.todo-list {
+#daily-reminders div {
+  flex-grow: 1;
   text-align: center;
 }
-.todo-item {
-  padding: 5px;
-  width: 200px;
-  margin-bottom: 10px;
+
+/* todo list */
+.todos {
+  text-align: center;
 }
 
-.todo-complete:checked + .todo-item {
-  background-color: black;
-  color: white;
-  text-decoration: line-through;
-}
-
-.todo {
-  display: flex;
-}
-
-.add-todo {
-  padding: 8px 14px;
-  font-weight: bold;
-  cursor: pointer;
-}
 /* JOURNAL ENTRY */
 #journal-entry {
   height: 50vh;
