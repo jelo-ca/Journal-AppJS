@@ -17,8 +17,26 @@
   text-align: center;
 }
 
+.habit-table {
+  width: 98%;
+  margin: auto;
+  border-collapse: collapse;
+}
+
+.habit-date th {
+  width: 20px;
+  padding: 0;
+  margin: 0;
+}
+
 .habit-tracker-grid {
   text-align: left;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
 }
 
 /* DAILY REMINDERS */
@@ -36,6 +54,24 @@
 /* todo list */
 .todos {
   text-align: center;
+}
+
+.todo-list {
+  padding: 0;
+}
+
+.todo-list li {
+  cursor: pointer;
+  text-align: left;
+  list-style: none;
+}
+
+.todo-list li.checked {
+  text-decoration: line-through;
+}
+
+.todo-list li span {
+  text-align: right;
 }
 
 /* JOURNAL ENTRY */
