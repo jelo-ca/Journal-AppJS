@@ -27,6 +27,31 @@
   justify-content: space-around;
 }
 
+/* todo list */
+.todo-list {
+  text-align: center;
+}
+.todo-item {
+  padding: 5px;
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.todo-complete:checked + .todo-item {
+  background-color: black;
+  color: white;
+  text-decoration: line-through;
+}
+
+.todo {
+  display: flex;
+}
+
+.add-todo {
+  padding: 8px 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
 /* JOURNAL ENTRY */
 #journal-entry {
   height: 50vh;

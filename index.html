@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Journal</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
   </head>
   <body>
     <nav id="nav-bar">This is Nav</nav>
@@ -15,7 +16,19 @@
     </section>
     <section id="daily-reminders">
       <div class="gratituity">GRATITUITY</div>
-      <div class="todo-list">TODO</div>
+      <div class="todo-list">
+        <h2>TODO</h2>
+        <div class="todo-container">
+          <template class="todo-template">
+            <div class="todo">
+              <input type="checkbox" class="todo-complete" />
+              <input type="text" class="todo-item" />
+              <button class="todo-delete">DELETE</button>
+            </div>
+          </template>
+        </div>
+        <button class="add-todo">Add Item</button>
+      </div>
       <div class="goals">GOALS</div>
     </section>
     <section id="journal-entry">
