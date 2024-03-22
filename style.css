@@ -2,19 +2,55 @@
 * {
   margin: 0;
   font-family: "quattrocento sans", sans-serif;
+  text-decoration: none;
+  list-style: none;
+}
+
+ul {
+  padding: 0;
+}
+
+section {
+  padding: 1rem;
 }
 
 /* NAV */
 #nav-bar {
   height: 5vh;
   background-color: beige;
+  position: relative;
+  display: flex;
+}
+.title {
+  margin: auto 0.5rem;
+  font-size: 2.5rem;
+}
+
+.nav {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0;
+}
+
+#nav-bar li {
+  display: inline;
+  margin: 1rem;
+}
+
+.nav-links {
+  color: black;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 /* HABIT TRACKER */
 #habit-tracker {
-  height: 20vh;
   background-color: tan;
   text-align: center;
+}
+
+#habit-tracker h2 {
+  text-align: left;
 }
 
 .habit-table {
@@ -39,6 +75,14 @@ td {
   border: 1px solid black;
 }
 
+.habit td {
+  cursor: pointer;
+}
+
+.habit-checkbox.checked {
+  font-weight: bold;
+}
+
 /* DAILY REMINDERS */
 #daily-reminders {
   height: 25vh;
@@ -54,10 +98,6 @@ td {
 /* todo list */
 .todos {
   text-align: center;
-}
-
-.todo-list {
-  padding: 0;
 }
 
 .todo-list li {
@@ -76,6 +116,9 @@ td {
 
 /* JOURNAL ENTRY */
 #journal-entry {
-  height: 50vh;
   background-color: tan;
+}
+
+.entry-date {
+  font-weight: normal;
 }

@@ -41,14 +41,34 @@ function setHabitTable(month) {
 
     //Habit cells
     for (let i = 0; i < habitAmount; i++) {
-      const td = document.createElement("td");
-      td.innerHTML = "x";
-      habit[i].insertCell();
+      let checkbox = habit[i].insertCell();
+      checkbox.classList.add("habit-checkbox");
     }
   }
 }
 
 setHabitTable(month);
+
+const habitCheckbox = document.querySelectorAll(".habit-checkbox");
+
+for (let i = 0; i < habitCheckbox.length; i++) {
+  habitCheckbox[i].addEventListener(
+    "click",
+    function () {
+      this.classList.toggle("checked");
+      console.log(i);
+      let span = document.createElement("span");
+      if (this.children.length === 0) {
+        span.innerHTML = "\u00d7";
+        this.appendChild(span);
+      } else {
+        this.innerHTML = "";
+      }
+      saveData();
+    },
+    false
+  );
+}
 
 // TODO-LIST
 
@@ -86,10 +106,18 @@ todoList.addEventListener(
 
 function saveData() {
   localStorage.setItem("todo-data", todoList.innerHTML);
+  localStorage.setItem("habit-data", habitTable.innerHTML);
 }
 
-function showTasks() {
+function loadData() {
   todoList.innerHTML = localStorage.getItem("todo-data");
+  // habitTable.innerHTML = localStorage.getItem("habit-data");
 }
 
-showTasks();
+loadData();
+
+// JOURNAL
+const entryDate = document.querySelector(".entry-date");
+
+entryDate.innerHTML =
+  months[month] + " " + date.getDay() + ", " + date.getFullYear();
