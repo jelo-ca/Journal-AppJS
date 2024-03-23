@@ -5,6 +5,8 @@ const habitDate = document.querySelector(".habit-date");
 const habit = document.querySelectorAll(".habit");
 const habitAmount = habit.length;
 
+// localStorage.clear();
+
 const months = [
   "January",
   "February",
@@ -50,13 +52,15 @@ function setHabitTable(month) {
 setHabitTable(month);
 
 const habitCheckbox = document.querySelectorAll(".habit-checkbox");
+let checkboxArray = [];
+let arr = ["amog", "us"];
 
 for (let i = 0; i < habitCheckbox.length; i++) {
   habitCheckbox[i].addEventListener(
     "click",
     function () {
       this.classList.toggle("checked");
-      console.log(i);
+      updateCheckboxArray(i);
       let span = document.createElement("span");
       if (this.children.length === 0) {
         span.innerHTML = "\u00d7";
@@ -68,6 +72,35 @@ for (let i = 0; i < habitCheckbox.length; i++) {
     },
     false
   );
+}
+
+//updates array for localStorage saving later
+function updateCheckboxArray(i) {
+  const index = checkboxArray.indexOf(i);
+  if (index > -1) {
+    checkboxArray.splice(index, 1);
+  } else {
+    checkboxArray.push(i);
+  }
+  console.log(checkboxArray);
+  console.log(arr);
+}
+
+console.log("checkboxArray: " + checkboxArray);
+
+//function to show saved habit data by toggling the saved indexes from localStorage
+function loadCheckbox() {
+  if (localStorage.getItem("habit-data")) {
+    checkboxArray = localStorage.getItem("habit-data").split(",");
+  }
+  for (i = 0; i < checkboxArray.length; i++) {
+    checkboxArray[i] = Number(checkboxArray[i]);
+    console.log(habitCheckbox[checkboxArray[i]]);
+    habitCheckbox[checkboxArray[i]].classList.toggle("checked");
+    let span = document.createElement("span");
+    span.innerHTML = "\u00d7";
+    habitCheckbox[checkboxArray[i]].appendChild(span);
+  }
 }
 
 // TODO-LIST
@@ -106,12 +139,12 @@ todoList.addEventListener(
 
 function saveData() {
   localStorage.setItem("todo-data", todoList.innerHTML);
-  localStorage.setItem("habit-data", habitTable.innerHTML);
+  localStorage.setItem("habit-data", checkboxArray);
 }
 
 function loadData() {
   todoList.innerHTML = localStorage.getItem("todo-data");
-  // habitTable.innerHTML = localStorage.getItem("habit-data");
+  loadCheckbox();
 }
 
 loadData();
