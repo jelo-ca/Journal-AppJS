@@ -24,10 +24,10 @@ const months = [
 
 let date = new Date();
 let month = date.getMonth();
+let numDays;
 monthHeader.innerHTML = months[month];
 
-function setHabitTable(month) {
-  let numDays;
+function setHabitTableHeader(month) {
   //sets up # of dates per month
   if (month < 5 && month % 2 == 0) {
     numDays = 31;
@@ -40,39 +40,11 @@ function setHabitTable(month) {
     const th = document.createElement("th");
     th.innerHTML = i + 1;
     habitDate.appendChild(th);
-
-    //Habit cells
-    for (let i = 0; i < habitAmount; i++) {
-      let checkbox = habit[i].insertCell();
-      checkbox.classList.add("habit-checkbox");
-    }
   }
 }
 
-setHabitTable(month);
-
-const habitCheckbox = document.querySelectorAll(".habit-checkbox");
-let checkboxArray = [];
-let arr = ["amog", "us"];
-
-for (let i = 0; i < habitCheckbox.length; i++) {
-  habitCheckbox[i].addEventListener(
-    "click",
-    function () {
-      this.classList.toggle("checked");
-      updateCheckboxArray(i);
-      let span = document.createElement("span");
-      if (this.children.length === 0) {
-        span.innerHTML = "\u00d7";
-        this.appendChild(span);
-      } else {
-        this.innerHTML = "";
-      }
-      saveData();
-    },
-    false
-  );
-}
+let habitCheckbox = document.querySelectorAll(".habit-checkbox");
+let habitData = {};
 
 const habitInput = document.querySelector(".habit-input");
 
@@ -80,44 +52,69 @@ function addHabit() {
   if (habitInput.value === "") {
     alert("You must write something");
   } else {
-    let tr = document.createElement("tr");
-    tr.classList.add("habit");
-    habitTable.appendChild(tr);
-    let td = document.createElement("td");
-    td.innerHTML = habitInput.value;
-    tr.appendChild(td);
+    //creates the habit row with user input;
+    habitData[habitInput.value] = [];
+    newhabit = habitTable.insertRow();
+    newhabit.innerHTML = habitInput.value;
+    newhabit.classList.add("habit");
+    //creates the cells depending on the amoutn of days in current month
+    for (i = 0; i < numDays; i++) {
+      let checkbox = newhabit.insertCell();
+      checkbox.classList.add("habit-checkbox");
+      checkbox.addEventListener("click", (e) => {
+        e.target.classList.toggle("checked");
+
+        //stores habit name and marked indexes using table
+        let habitName = Object.keys(habitData);
+        let index = e.target.cellIndex;
+        let row = e.target.parentElement.rowIndex - 1;
+
+        console.log(habitData[habitName[row]].includes(index));
+
+        //adds index to habiData Dictionary if not there, else: delete the index in the library
+        if (!habitData[habitName[row]].includes(index)) {
+          habitData[habitName[row]].push(index);
+        } else {
+          habitData[habitName[row]].splice(
+            habitData[habitName[row]].indexOf(index),
+            1
+          );
+        }
+        console.log(habitData);
+      });
+    }
   }
   habitInput.value = "";
-  saveData();
-  loadCheckbox();
+
+  let habitName = Object.keys(habitData);
+  console.log(habitData);
 }
 
 //updates array for localStorage saving later
-function updateCheckboxArray(i) {
-  const index = checkboxArray.indexOf(i);
-  if (index > -1) {
-    checkboxArray.splice(index, 1);
-  } else {
-    checkboxArray.push(i);
-  }
-  console.log(checkboxArray);
-  console.log(arr);
-}
+// function updateCheckboxArray(i) {
+//   const index = checkboxArray.indexOf(i);
+//   if (index > -1) {
+//     checkboxArray.splice(index, 1);
+//   } else {
+//     checkboxArray.push(i);
+//   }
+//   console.log(checkboxArray);
+// }
 
 //function to show saved habit data by toggling the saved indexes from localStorage
-function loadCheckbox() {
-  if (localStorage.getItem("habit-data")) {
-    checkboxArray = localStorage.getItem("habit-data").split(",");
-  }
-  for (i = 0; i < checkboxArray.length; i++) {
-    checkboxArray[i] = Number(checkboxArray[i]);
-    console.log(habitCheckbox[checkboxArray[i]]);
-    habitCheckbox[checkboxArray[i]].classList.toggle("checked");
-    let span = document.createElement("span");
-    span.innerHTML = "\u00d7";
-    habitCheckbox[checkboxArray[i]].appendChild(span);
-  }
-}
+// function loadCheckbox() {
+//   if (localStorage.getItem("habit-data")) {
+//     checkboxArray = localStorage.getItem("habit-data").split(",");
+//   }
+//   for (i = 0; i < checkboxArray.length; i++) {
+//     checkboxArray[i] = Number(checkboxArray[i]);
+//     console.log(habitCheckbox[checkboxArray[i]]);
+//     habitCheckbox[checkboxArray[i]].classList.toggle("checked");
+//     let span = document.createElement("span");
+//     span.innerHTML = "\u00d7";
+//     habitCheckbox[checkboxArray[i]].appendChild(span);
+//   }
+// }
 
 // TODO-LIST
 
@@ -155,18 +152,20 @@ todoList.addEventListener(
 
 function saveData() {
   localStorage.setItem("todo-data", todoList.innerHTML);
-  localStorage.setItem("habit-data", checkboxArray);
+  //localStorage.setItem("habit-data", checkboxArray);
 }
 
 function loadData() {
   todoList.innerHTML = localStorage.getItem("todo-data");
-  loadCheckbox();
+  //loadCheckbox();
 }
-
-loadData();
 
 // JOURNAL
 const entryDate = document.querySelector(".entry-date");
 
 entryDate.innerHTML =
   months[month] + " " + date.getDate() + ", " + date.getFullYear();
+
+// INITIAL
+setHabitTableHeader(month);
+loadData();
