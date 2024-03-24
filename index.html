@@ -35,7 +35,13 @@
       </ul>
     </nav>
     <section id="habit-tracker">
-      <h2>HABIT TRACKER</h2>
+      <div class="habit-container-header">
+        <h2>HABIT TRACKER</h2>
+        <div class="add-habit">
+          <input type="text" class="habit-input" />
+          <button onclick="addHabit()">Add Habit</button>
+        </div>
+      </div>
       <h3 class="month-header">MONTH</h3>
       <table class="habit-table">
         <tr class="habit-date">
@@ -58,7 +64,7 @@
         <h2>TODO</h2>
         <div class="todo-container">
           <div class="todo">
-            <input type="text" class="todo-item" />
+            <input type="text" class="todo-input" />
             <button class="add-todo" onclick="addTodo()">Add Item</button>
           </div>
           <ul class="todo-list">
@@ -72,7 +78,9 @@
     </section>
     <section id="journal-entry">
       <h3>Date: <span class="entry-date"></span></h3>
-      <div class="entry">entry</div>
+      <div class="entry">
+        <textarea name="entry-text" class="entry-text"></textarea>
+      </div>
     </section>
   </body>
 </html>

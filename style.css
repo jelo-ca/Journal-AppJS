@@ -49,6 +49,11 @@ section {
   text-align: center;
 }
 
+.habit-container-header {
+  display: flex;
+  justify-content: space-between;
+}
+
 #habit-tracker h2 {
   text-align: left;
 }
@@ -81,13 +86,16 @@ td {
 
 .habit-checkbox.checked {
   font-weight: bold;
+  color: white;
+  background-color: black;
 }
 
 /* DAILY REMINDERS */
 #daily-reminders {
   height: 25vh;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  gap: 0.5rem;
 }
 
 #daily-reminders div {
@@ -121,4 +129,16 @@ td {
 
 .entry-date {
   font-weight: normal;
+}
+
+#journal-entry h3 {
+  font-size: 1.5rem;
+}
+
+.entry {
+  padding: 1rem;
+}
+
+.entry-text {
+  font-size: 1rem;
 }

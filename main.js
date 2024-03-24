@@ -22,7 +22,7 @@ const months = [
   "December",
 ];
 
-const date = new Date();
+let date = new Date();
 let month = date.getMonth();
 monthHeader.innerHTML = months[month];
 
@@ -74,6 +74,24 @@ for (let i = 0; i < habitCheckbox.length; i++) {
   );
 }
 
+const habitInput = document.querySelector(".habit-input");
+
+function addHabit() {
+  if (habitInput.value === "") {
+    alert("You must write something");
+  } else {
+    let tr = document.createElement("tr");
+    tr.classList.add("habit");
+    habitTable.appendChild(tr);
+    let td = document.createElement("td");
+    td.innerHTML = habitInput.value;
+    tr.appendChild(td);
+  }
+  habitInput.value = "";
+  saveData();
+  loadCheckbox();
+}
+
 //updates array for localStorage saving later
 function updateCheckboxArray(i) {
   const index = checkboxArray.indexOf(i);
@@ -85,8 +103,6 @@ function updateCheckboxArray(i) {
   console.log(checkboxArray);
   console.log(arr);
 }
-
-console.log("checkboxArray: " + checkboxArray);
 
 //function to show saved habit data by toggling the saved indexes from localStorage
 function loadCheckbox() {
@@ -107,20 +123,20 @@ function loadCheckbox() {
 
 let todoContainer = document.querySelector(".todo-container");
 const todoList = document.querySelector(".todo-list");
-const inputField = document.querySelector(".todo-item");
+const inputTodo = document.querySelector(".todo-input");
 
 function addTodo() {
-  if (inputField.value === "") {
+  if (inputTodo.value === "") {
     alert("You must write something");
   } else {
     let li = document.createElement("li");
-    li.innerHTML = inputField.value;
+    li.innerHTML = inputTodo.value;
     todoList.appendChild(li);
     let span = document.createElement("span");
     span.innerHTML = "\u00d7";
     li.appendChild(span);
   }
-  inputField.value = "";
+  inputTodo.value = "";
   saveData();
 }
 
@@ -153,4 +169,4 @@ loadData();
 const entryDate = document.querySelector(".entry-date");
 
 entryDate.innerHTML =
-  months[month] + " " + date.getDay() + ", " + date.getFullYear();
+  months[month] + " " + date.getDate() + ", " + date.getFullYear();
