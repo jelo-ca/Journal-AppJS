@@ -91,6 +91,7 @@ td {
 .habit {
   border: 1px solid black;
 }
+
 .habit td {
   cursor: pointer;
 }
@@ -102,7 +103,7 @@ td {
 .habit-checkbox.checked {
   font-weight: bold;
   color: white;
-  background-color: black;
+  background-color: green;
 }
 
 /* DAILY REMINDERS */
@@ -121,20 +122,36 @@ td {
 /* todo list */
 .todos {
   text-align: center;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 0 1rem;
 }
 
 .todo-list li {
-  cursor: pointer;
   text-align: left;
   list-style: none;
+  display: flex;
+  justify-content: space-between;
 }
 
-.todo-list li.checked {
+.todo-list li p,
+.todo-list li span {
+  cursor: pointer;
+}
+
+.todo-list li p:hover {
+  text-decoration: line-through;
+}
+
+.todo-list li p.checked {
   text-decoration: line-through;
 }
 
 .todo-list li span {
   text-align: right;
+}
+.todo-list li span:hover {
+  text-decoration: none;
 }
 
 /* JOURNAL ENTRY */

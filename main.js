@@ -24,17 +24,19 @@ const months = [
 
 let date = new Date();
 let month = date.getMonth();
-let numDays;
+let numDays = setNumDays();
 monthHeader.innerHTML = months[month];
 
-function setHabitTableHeader(month) {
+function setNumDays() {
   //sets up # of dates per month
   if (month < 5 && month % 2 == 0) {
-    numDays = 31;
+    return 31;
   } else {
-    numDays = 30;
+    return 30;
   }
+}
 
+function setHabitTableHeader(month) {
   for (let i = 0; i < numDays; i++) {
     //Header Dates
     const th = document.createElement("th");
@@ -43,10 +45,9 @@ function setHabitTableHeader(month) {
   }
 }
 
+const habitInput = document.querySelector(".habit-input");
 let habitCheckbox = document.querySelectorAll(".habit-checkbox");
 let habitData = {};
-
-const habitInput = document.querySelector(".habit-input");
 
 function addHabit() {
   if (habitInput.value === "") {
@@ -54,68 +55,68 @@ function addHabit() {
   } else {
     //creates the habit row with user input;
     habitData[habitInput.value] = [];
-    newhabit = habitTable.insertRow();
-    newhabit.innerHTML = habitInput.value;
-    newhabit.classList.add("habit");
-    //creates the cells depending on the amoutn of days in current month
-    for (i = 0; i < numDays; i++) {
-      let checkbox = newhabit.insertCell();
-      checkbox.classList.add("habit-checkbox");
-      checkbox.addEventListener("click", (e) => {
-        e.target.classList.toggle("checked");
-
-        //stores habit name and marked indexes using table
-        let habitName = Object.keys(habitData);
-        let index = e.target.cellIndex;
-        let row = e.target.parentElement.rowIndex - 1;
-
-        console.log(habitData[habitName[row]].includes(index));
-
-        //adds index to habiData Dictionary if not there, else: delete the index in the library
-        if (!habitData[habitName[row]].includes(index)) {
-          habitData[habitName[row]].push(index);
-        } else {
-          habitData[habitName[row]].splice(
-            habitData[habitName[row]].indexOf(index),
-            1
-          );
-        }
-        console.log(habitData);
-      });
-    }
+    let newHabit = habitTable.insertRow();
+    newHabit.innerHTML = habitInput.value;
+    newHabit.classList.add("habit");
+    createHabitCells(newHabit);
   }
   habitInput.value = "";
-
-  let habitName = Object.keys(habitData);
-  console.log(habitData);
+  saveHabitData();
 }
 
-//updates array for localStorage saving later
-// function updateCheckboxArray(i) {
-//   const index = checkboxArray.indexOf(i);
-//   if (index > -1) {
-//     checkboxArray.splice(index, 1);
-//   } else {
-//     checkboxArray.push(i);
-//   }
-//   console.log(checkboxArray);
-// }
+//saves habitData to localStorage
+function saveHabitData() {
+  localStorage.setItem("habit-data", JSON.stringify(habitData));
+}
 
-//function to show saved habit data by toggling the saved indexes from localStorage
-// function loadCheckbox() {
-//   if (localStorage.getItem("habit-data")) {
-//     checkboxArray = localStorage.getItem("habit-data").split(",");
-//   }
-//   for (i = 0; i < checkboxArray.length; i++) {
-//     checkboxArray[i] = Number(checkboxArray[i]);
-//     console.log(habitCheckbox[checkboxArray[i]]);
-//     habitCheckbox[checkboxArray[i]].classList.toggle("checked");
-//     let span = document.createElement("span");
-//     span.innerHTML = "\u00d7";
-//     habitCheckbox[checkboxArray[i]].appendChild(span);
-//   }
-// }
+function loadHabitData() {
+  let data = localStorage.getItem("habit-data");
+  habitData = JSON.parse(data);
+  for (const key in habitData) {
+    let habitCell = habitTable.insertRow();
+    habitCell.innerHTML = key;
+    habitCell.classList.add("habit");
+    createHabitCells(habitCell);
+    //takes index numbers from habit-data and marks them as checked
+    let row = Object.keys(habitData).indexOf(key);
+    for (let index = 0; index < habitData[key].length; index++)
+      habitTable.rows[row + 1].cells[habitData[key][index]].classList.toggle(
+        "checked"
+      );
+  }
+}
 
+function createHabitCells(habitRow) {
+  //creates the cells depending on the amount of days in current month
+  for (let i = 0; i < numDays; i++) {
+    let checkbox = habitRow.insertCell();
+    checkbox.classList.add("habit-checkbox");
+    //adds event listener to each cell
+    checkbox.addEventListener("click", (e) => {
+      e.target.classList.toggle("checked");
+
+      //stores habit name and marked indexes using table
+      let habitName = Object.keys(habitData);
+      let index = e.target.cellIndex;
+      let row = e.target.parentElement.rowIndex - 1;
+
+      //adds index to habiData Dictionary if not there, else: delete the index in the library
+      if (!habitData[habitName[row]].includes(index)) {
+        habitData[habitName[row]].push(index);
+      } else {
+        habitData[habitName[row]].splice(
+          habitData[habitName[row]].indexOf(index),
+          1
+        );
+      }
+      saveHabitData();
+    });
+  }
+}
+
+if (localStorage.getItem("habit-data")) loadHabitData();
+
+//localStorage.clear();
 // TODO-LIST
 
 let todoContainer = document.querySelector(".todo-container");
@@ -127,30 +128,32 @@ function addTodo() {
     alert("You must write something");
   } else {
     let li = document.createElement("li");
-    li.innerHTML = inputTodo.value;
+    let p = document.createElement("p");
     todoList.appendChild(li);
+    p.innerHTML = inputTodo.value;
+    li.appendChild(p);
     let span = document.createElement("span");
     span.innerHTML = "\u00d7";
     li.appendChild(span);
   }
   inputTodo.value = "";
-  saveData();
+  saveTodoData();
 }
 
 todoList.addEventListener(
   "click",
   function (e) {
-    if (e.target.tagName === "LI") {
+    if (e.target.tagName === "P") {
       e.target.classList.toggle("checked");
     } else if (e.target.tagName === "SPAN") {
       e.target.parentElement.remove();
     }
-    saveData();
+    saveTodoData();
   },
   false
 );
 
-function saveData() {
+function saveTodoData() {
   localStorage.setItem("todo-data", todoList.innerHTML);
   //localStorage.setItem("habit-data", checkboxArray);
 }
