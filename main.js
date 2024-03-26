@@ -56,8 +56,11 @@ function addHabit() {
     //creates the habit row with user input;
     habitData[habitInput.value] = [];
     let newHabit = habitTable.insertRow();
-    newHabit.innerHTML = habitInput.value;
-    newHabit.classList.add("habit");
+    let p = document.createElement("P");
+    p.innerHTML = habitInput.value;
+    p.classList.add("habit");
+    newHabit.classList.add("habit-cell");
+    newHabit.appendChild(p);
     createHabitCells(newHabit);
   }
   habitInput.value = "";
@@ -74,8 +77,11 @@ function loadHabitData() {
   habitData = JSON.parse(data);
   for (const key in habitData) {
     let habitCell = habitTable.insertRow();
-    habitCell.innerHTML = key;
-    habitCell.classList.add("habit");
+    let p = document.createElement("P");
+    p.innerHTML = key;
+    p.classList.add("habit");
+    habitCell.classList.add("habit-cell");
+    habitCell.appendChild(p);
     createHabitCells(habitCell);
     //takes index numbers from habit-data and marks them as checked
     let row = Object.keys(habitData).indexOf(key);

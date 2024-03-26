@@ -89,14 +89,21 @@ td {
 }
 
 .habit {
-  border: 1px solid black;
-}
-
-.habit td {
   cursor: pointer;
 }
 
-.habit td:hover {
+.habit:hover {
+  background-color: red;
+}
+
+.habit-cell {
+  border-bottom: 1px black solid;
+}
+.habit-cell td {
+  cursor: pointer;
+}
+
+.habit-cell td:hover {
   background-color: whitesmoke;
 }
 
