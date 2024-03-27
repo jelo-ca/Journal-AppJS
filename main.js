@@ -203,7 +203,7 @@ function saveTodoData() {
 }
 
 function loadData() {
-  if (!localStorage.getItem("todo-data") == null)
+  if (localStorage.getItem("todo-data"))
     todoList.innerHTML = localStorage.getItem("todo-data");
   if (localStorage.getItem("habit-data")) loadHabitData();
 }

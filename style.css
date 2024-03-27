@@ -115,7 +115,7 @@ td {
 .habit-checkbox.checked {
   font-weight: bold;
   color: white;
-  background-color: green;
+  background-color: rgb(51, 51, 51);
 }
 
 /* DAILY REMINDERS */
@@ -188,4 +188,11 @@ td {
 
 .entry-text {
   font-size: 1rem;
+  min-width: 100%;
+  max-width: 100%;
+  height: 100%;
+}
+
+.end-button-container {
+  text-align: center;
 }
