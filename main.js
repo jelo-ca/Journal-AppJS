@@ -1,11 +1,24 @@
-// HABIT TRACKER
+//Date references
+
+// HABIT references
 const monthHeader = document.querySelector(".month-header");
 const habitTable = document.querySelector(".habit-table");
 const habitDate = document.querySelector(".habit-date");
 const habit = document.querySelectorAll(".habit");
 const habitAmount = habit.length;
+const habitInput = document.querySelector(".habit-input");
+let habitCheckbox = document.querySelectorAll(".habit-checkbox");
+let habitData = {};
+let data = localStorage.getItem("habit-data");
+habitData = JSON.parse(data);
 
-// localStorage.clear();
+//Todo references
+let todoContainer = document.querySelector(".todo-container");
+const todoList = document.querySelector(".todo-list");
+const inputTodo = document.querySelector(".todo-input");
+
+//JOURNAL references
+const entryDate = document.querySelector(".entry-date");
 
 const months = [
   "January",
@@ -23,13 +36,42 @@ const months = [
 ];
 
 let date = new Date();
-let month = date.getMonth();
+let day = date.getDay();
+let month = months[date.getMonth()];
 let numDays = setNumDays();
-monthHeader.innerHTML = months[month];
+monthHeader.innerHTML = month;
+
+function checkDay(day) {
+  if (!localStorage.getItem("day")) localStorage.setItem("day", day);
+  else {
+    //CLEAR DAILY REMINDERS
+    if (day !== Number(localStorage.getItem("day"))) {
+      localStorage.setItem("day", day);
+      localStorage.setItem("todo-data", null);
+    }
+  }
+}
+
+function checkMonth(month) {
+  if (!localStorage.getItem("month")) localStorage.setItem("month", month);
+  else {
+    if (month !== localStorage.getItem("month")) {
+      //CLEAR HABIT LIST
+      for (const key in habitData) {
+        console.log(habitData);
+        habitData[key] = [];
+      }
+      //SAVE DATA OF THE WHOLE MONTH
+      localStorage.setItem("month", month);
+      console.log("Month Changed");
+    }
+  }
+  saveHabitData();
+}
 
 function setNumDays() {
   //sets up # of dates per month
-  if (month < 5 && month % 2 == 0) {
+  if (date.getMonth() < 5 && date.getMonth() % 2 == 0) {
     return 31;
   } else {
     return 30;
@@ -44,10 +86,6 @@ function setHabitTableHeader(month) {
     habitDate.appendChild(th);
   }
 }
-
-const habitInput = document.querySelector(".habit-input");
-let habitCheckbox = document.querySelectorAll(".habit-checkbox");
-let habitData = {};
 
 function addHabit() {
   if (habitInput.value === "") {
@@ -76,8 +114,6 @@ function saveHabitData() {
 }
 
 function loadHabitData() {
-  let data = localStorage.getItem("habit-data");
-  habitData = JSON.parse(data);
   for (const key in habitData) {
     let habitCell = habitTable.insertRow();
     let p = document.createElement("P");
@@ -99,9 +135,9 @@ function loadHabitData() {
 function deleteHabit(e) {
   e.target.parentElement.remove();
   delete habitData[e.target.innerHTML];
-  console.log(habitData);
   saveHabitData();
 }
+
 function createHabitCells(habitRow) {
   //creates the cells depending on the amount of days in current month
   for (let i = 0; i < numDays; i++) {
@@ -130,14 +166,7 @@ function createHabitCells(habitRow) {
   }
 }
 
-if (localStorage.getItem("habit-data")) loadHabitData();
-
-//localStorage.clear();
 // TODO-LIST
-
-let todoContainer = document.querySelector(".todo-container");
-const todoList = document.querySelector(".todo-list");
-const inputTodo = document.querySelector(".todo-input");
 
 function addTodo() {
   if (inputTodo.value === "") {
@@ -171,20 +200,19 @@ todoList.addEventListener(
 
 function saveTodoData() {
   localStorage.setItem("todo-data", todoList.innerHTML);
-  //localStorage.setItem("habit-data", checkboxArray);
 }
 
 function loadData() {
-  todoList.innerHTML = localStorage.getItem("todo-data");
-  //loadCheckbox();
+  if (!localStorage.getItem("todo-data") == null)
+    todoList.innerHTML = localStorage.getItem("todo-data");
+  if (localStorage.getItem("habit-data")) loadHabitData();
 }
 
 // JOURNAL
-const entryDate = document.querySelector(".entry-date");
-
-entryDate.innerHTML =
-  months[month] + " " + date.getDate() + ", " + date.getFullYear();
+entryDate.innerHTML = month + " " + date.getDate() + ", " + date.getFullYear();
 
 // INITIAL
+checkDay(day);
+checkMonth(month);
 setHabitTableHeader(month);
 loadData();

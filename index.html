@@ -38,7 +38,7 @@
       <div class="habit-container-header">
         <h2>HABIT TRACKER</h2>
         <div class="add-habit add-container">
-          <input type="text" class="habit-input" />
+          <input type="text" class="habit-input" placeholder="Add Habit" />
           <button onclick="addHabit()">&#43;</button>
         </div>
       </div>
@@ -50,8 +50,20 @@
       </table>
     </section>
     <section id="daily-reminders">
-      <div class="gratituity"><h2>GRATITUITY</h2></div>
-      <div class="todos">
+      <div class="gratituity-container reminder-section">
+        <h2>GRATITUITY</h2>
+        <div class="gratituity add-container">
+          <p>I am thankful for:</p>
+          <input type="text" class="gratituity-input" />
+          <button class="add-gratituity" onclick="addGratituity()">
+            &#43;
+          </button>
+        </div>
+        <ul class="gratituity-list">
+          <!-- li go here -->
+        </ul>
+      </div>
+      <div class="todos reminder-section">
         <h2>TODO</h2>
         <div class="todo-container">
           <div class="todo add-container">
@@ -63,7 +75,7 @@
           </ul>
         </div>
       </div>
-      <div class="goals">
+      <div class="goals reminder-section">
         <h2>GOAL</h2>
       </div>
     </section>

@@ -22,6 +22,11 @@ button {
   border: 1px solid black;
   cursor: pointer;
 }
+
+input {
+  text-align: center;
+}
+
 /* NAV */
 #nav-bar {
   height: 5vh;
@@ -117,21 +122,24 @@ td {
 #daily-reminders {
   height: 25vh;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+
+.add-container {
+  display: flex;
+  justify-content: center;
   gap: 0.5rem;
 }
 
-#daily-reminders div {
+.reminder-section {
+  padding: 0 1rem;
   flex-grow: 1;
   text-align: center;
 }
-
 /* todo list */
 .todos {
-  text-align: center;
   border-left: 1px solid black;
   border-right: 1px solid black;
-  padding: 0 1rem;
 }
 
 .todo-list li {
