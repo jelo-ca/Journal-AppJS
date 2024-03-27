@@ -56,9 +56,12 @@ function addHabit() {
     //creates the habit row with user input;
     habitData[habitInput.value] = [];
     let newHabit = habitTable.insertRow();
+    //adds habitName
     let p = document.createElement("P");
     p.innerHTML = habitInput.value;
     p.classList.add("habit");
+    p.addEventListener("click", (e) => deleteHabit(e));
+
     newHabit.classList.add("habit-cell");
     newHabit.appendChild(p);
     createHabitCells(newHabit);
@@ -80,6 +83,7 @@ function loadHabitData() {
     let p = document.createElement("P");
     p.innerHTML = key;
     p.classList.add("habit");
+    p.addEventListener("click", (e) => deleteHabit(e));
     habitCell.classList.add("habit-cell");
     habitCell.appendChild(p);
     createHabitCells(habitCell);
@@ -92,6 +96,12 @@ function loadHabitData() {
   }
 }
 
+function deleteHabit(e) {
+  e.target.parentElement.remove();
+  delete habitData[e.target.innerHTML];
+  console.log(habitData);
+  saveHabitData();
+}
 function createHabitCells(habitRow) {
   //creates the cells depending on the amount of days in current month
   for (let i = 0; i < numDays; i++) {
