@@ -1,5 +1,3 @@
-//Date references
-
 // HABIT references
 const monthHeader = document.querySelector(".month-header");
 const habitTable = document.querySelector(".habit-table");
@@ -9,11 +7,13 @@ const habitAmount = habit.length;
 const habitInput = document.querySelector(".habit-input");
 let habitCheckbox = document.querySelectorAll(".habit-checkbox");
 let habitData = {};
-let data = localStorage.getItem("habit-data");
-habitData = JSON.parse(data);
+habitData = JSON.parse(localStorage.getItem("habit-data"));
 
 //Todo references
 let todoContainer = document.querySelector(".todo-container");
+let todoData = ["a", "b", "c"];
+todoData = JSON.parse(localStorage.getItem("todo-data"));
+console.log(todoData);
 const todoList = document.querySelector(".todo-list");
 const inputTodo = document.querySelector(".todo-input");
 
@@ -35,6 +35,7 @@ const months = [
   "December",
 ];
 
+//Date references
 let date = new Date();
 let day = date.getDay();
 let month = months[date.getMonth()];
@@ -44,10 +45,12 @@ monthHeader.innerHTML = month;
 function checkDay(day) {
   if (!localStorage.getItem("day")) localStorage.setItem("day", day);
   else {
-    //CLEAR DAILY REMINDERS
     if (day !== Number(localStorage.getItem("day"))) {
       localStorage.setItem("day", day);
-      localStorage.setItem("todo-data", null);
+      //SAVE REMINDERS
+
+      //CLEAR DAILY REMINDERS
+      localStorage.setItem("todo-data", "");
     }
   }
 }
@@ -176,6 +179,7 @@ function addTodo() {
     let p = document.createElement("p");
     todoList.appendChild(li);
     p.innerHTML = inputTodo.value;
+    todoData.push(inputTodo.value);
     li.appendChild(p);
     let span = document.createElement("span");
     span.innerHTML = "\u00d7";
@@ -199,12 +203,18 @@ todoList.addEventListener(
 );
 
 function saveTodoData() {
-  localStorage.setItem("todo-data", todoList.innerHTML);
+  localStorage.setItem("todo-data", JSON.stringify(todoData));
+}
+
+function loadTodoData() {
+  console.log(todoData);
+  for (todo in todoData) {
+    console.log(todo);
+  }
 }
 
 function loadData() {
-  if (localStorage.getItem("todo-data"))
-    todoList.innerHTML = localStorage.getItem("todo-data");
+  if (localStorage.getItem("todo-data")) loadTodoData();
   if (localStorage.getItem("habit-data")) loadHabitData();
 }
 
