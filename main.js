@@ -59,11 +59,18 @@ function checkMonth(month) {
   if (!localStorage.getItem("month")) localStorage.setItem("month", month);
   else {
     if (month !== localStorage.getItem("month")) {
+      //SAVE DATA OF THE WHOLE MONTH
+      let monthlyData = {
+        _month: localStorage.getItem("month"),
+        _habitData: habitData,
+      };
+      localStorage.setItem("monthly-data", JSON.stringify(monthlyData));
+
       //CLEAR HABIT LIST
       for (const key in habitData) {
         habitData[key] = [];
       }
-      //SAVE DATA OF THE WHOLE MONTH
+
       localStorage.setItem("month", month);
       console.log("Month Changed");
     }
