@@ -11,9 +11,9 @@ habitData = JSON.parse(localStorage.getItem("habit-data"));
 
 //Todo references
 let todoContainer = document.querySelector(".todo-container");
-let todoData = ["a", "b", "c"];
-todoData = JSON.parse(localStorage.getItem("todo-data"));
-console.log(todoData);
+let todoData = [];
+if (localStorage.getItem("todo-data"))
+  todoData = JSON.parse(localStorage.getItem("todo-data"));
 const todoList = document.querySelector(".todo-list");
 const inputTodo = document.querySelector(".todo-input");
 
@@ -61,7 +61,6 @@ function checkMonth(month) {
     if (month !== localStorage.getItem("month")) {
       //CLEAR HABIT LIST
       for (const key in habitData) {
-        console.log(habitData);
         habitData[key] = [];
       }
       //SAVE DATA OF THE WHOLE MONTH
@@ -154,6 +153,9 @@ function createHabitCells(habitRow) {
       let habitName = Object.keys(habitData);
       let index = e.target.cellIndex;
       let row = e.target.parentElement.rowIndex - 1;
+      // let span = document.createElement("span");
+      // span.innerHTML = "\u00d7";      //MARKS X on habit
+      // e.target.appendChild(span);
 
       //adds index to habiData Dictionary if not there, else: delete the index in the library
       if (!habitData[habitName[row]].includes(index)) {
@@ -195,6 +197,12 @@ todoList.addEventListener(
     if (e.target.tagName === "P") {
       e.target.classList.toggle("checked");
     } else if (e.target.tagName === "SPAN") {
+      //REMOVES FROM STORED DATA
+      let li = e.target.closest("li");
+      let node = Array.from(li.closest("ul").children);
+      let index = node.indexOf(li);
+      todoData.splice(index, 1);
+      //REMOVES FROM PAGE
       e.target.parentElement.remove();
     }
     saveTodoData();
@@ -207,9 +215,18 @@ function saveTodoData() {
 }
 
 function loadTodoData() {
-  console.log(todoData);
-  for (todo in todoData) {
-    console.log(todo);
+  if (todoData) {
+    todoData.forEach((todo) => {
+      let li = document.createElement("li");
+      let p = document.createElement("p");
+      todoList.appendChild(li);
+      p.innerHTML = todo;
+      li.appendChild(p);
+      let span = document.createElement("span");
+      span.innerHTML = "\u00d7";
+      li.appendChild(span);
+      saveTodoData();
+    });
   }
 }
 
