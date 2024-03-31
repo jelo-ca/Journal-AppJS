@@ -19,6 +19,19 @@ const inputTodo = document.querySelector(".todo-input");
 
 //JOURNAL references
 const entryDate = document.querySelector(".entry-date");
+const entryText = document.querySelector(".entry-text");
+const entryButton = document.querySelector(".entry-button");
+let entry;
+
+//MONTHLY DATA OBJECT
+let monthlyData = {
+  _month: "",
+  _habitData: {},
+  _journalData: {},
+};
+
+if (localStorage.getItem("entry-data"))
+  entry = localStorage.getItem("entry-data");
 
 const months = [
   "January",
@@ -37,7 +50,7 @@ const months = [
 
 //Date references
 let date = new Date();
-let day = date.getDay();
+let day = date.getDate();
 let month = months[date.getMonth()];
 let numDays = setNumDays();
 monthHeader.innerHTML = month;
@@ -47,10 +60,11 @@ function checkDay(day) {
   else {
     if (day !== Number(localStorage.getItem("day"))) {
       localStorage.setItem("day", day);
-      //SAVE REMINDERS
+      //SAVE REMINDERS DATA AND JOURNAL ENTRY
 
       //CLEAR DAILY REMINDERS
       localStorage.setItem("todo-data", "");
+      localStorage.setItem("entry-data", "");
     }
   }
 }
@@ -60,10 +74,8 @@ function checkMonth(month) {
   else {
     if (month !== localStorage.getItem("month")) {
       //SAVE DATA OF THE WHOLE MONTH
-      let monthlyData = {
-        _month: localStorage.getItem("month"),
-        _habitData: habitData,
-      };
+      monthlyData._month = localStorage.getItem("month");
+      montlyData._habitData = habitData;
       localStorage.setItem("monthly-data", JSON.stringify(monthlyData));
 
       //CLEAR HABIT LIST
@@ -221,6 +233,21 @@ function saveTodoData() {
   localStorage.setItem("todo-data", JSON.stringify(todoData));
 }
 
+//JOURNAL ENTRY
+entryText;
+
+entryDate.innerHTML = month + " " + date.getDate() + ", " + date.getFullYear();
+
+function submitEntry() {
+  localStorage.setItem("entry-data", entryText.value);
+}
+
+function loadEntryData() {
+  entryText.value = entry;
+}
+
+//INITIAL FUNCTIONS
+
 function loadTodoData() {
   if (todoData) {
     todoData.forEach((todo) => {
@@ -238,12 +265,10 @@ function loadTodoData() {
 }
 
 function loadData() {
-  if (localStorage.getItem("todo-data")) loadTodoData();
   if (localStorage.getItem("habit-data")) loadHabitData();
+  if (localStorage.getItem("todo-data")) loadTodoData();
+  if (localStorage.getItem("entry-data")) loadEntryData();
 }
-
-// JOURNAL
-entryDate.innerHTML = month + " " + date.getDate() + ", " + date.getFullYear();
 
 // INITIAL
 checkDay(day);
