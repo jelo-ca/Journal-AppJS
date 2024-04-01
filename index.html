@@ -54,7 +54,7 @@
         <h2>GRATITUITY</h2>
         <div class="gratituity add-container">
           <p>I am thankful for:</p>
-          <input type="text" class="gratituity-input" />
+          <input type="text" class="gratituity-input" placeholder="Coffee" />
           <button class="add-gratituity" onclick="addGratituity()">
             &#43;
           </button>
@@ -75,6 +75,13 @@
       </div>
       <div class="goals reminder-section">
         <h2>GOAL</h2>
+        <div class="set-goal-container add-container">
+          <input type="text" class="goal-input" placeholder="Remind Yourself" />
+          <button class="set-goal-btn" onclick="setGoal()">set goal</button>
+        </div>
+        <div class="goal-statement-container">
+          <p class="goal-statement"></p>
+        </div>
       </div>
     </section>
     <section id="journal-entry">

@@ -9,26 +9,23 @@ let habitCheckbox = document.querySelectorAll(".habit-checkbox");
 let habitData = {};
 habitData = JSON.parse(localStorage.getItem("habit-data"));
 
-//Todo references
-let todoContainer = document.querySelector(".todo-container");
+//TODO references
+const todoContainer = document.querySelector(".todo-container");
 let todoData = [];
 if (localStorage.getItem("todo-data"))
   todoData = JSON.parse(localStorage.getItem("todo-data"));
 const todoList = document.querySelector(".todo-list");
 const inputTodo = document.querySelector(".todo-input");
 
+//GOAL references
+const goalInput = document.querySelector(".goal-input");
+const goalStatement = document.querySelector(".goal-statement");
+
 //JOURNAL references
 const entryDate = document.querySelector(".entry-date");
 const entryText = document.querySelector(".entry-text");
 const entryButton = document.querySelector(".entry-button");
 let entry;
-
-//MONTHLY DATA OBJECT
-let monthlyData = {
-  _month: "",
-  _habitData: {},
-  _journalData: {},
-};
 
 if (localStorage.getItem("entry-data"))
   entry = localStorage.getItem("entry-data");
@@ -49,17 +46,33 @@ const months = [
 ];
 
 //Date references
-let date = new Date();
-let day = date.getDate();
-let month = months[date.getMonth()];
+let DATE = new Date();
+let date = DATE.getDate();
+let month = months[DATE.getMonth()];
 let numDays = setNumDays();
 monthHeader.innerHTML = month;
 
-function checkDay(day) {
-  if (!localStorage.getItem("day")) localStorage.setItem("day", day);
+//MONTHLY DATA OBJECT
+let monthlyData = {
+  _month: "",
+  _habitData: {},
+  _dailyData: {},
+};
+
+//DAILY DATA OBJECT
+const dailyData = {
+  _date: null,
+  _gratituityData: [],
+  _todoData: {},
+  _goal: null,
+  _journalEntry: "",
+};
+
+function checkDate(date) {
+  if (!localStorage.getItem("date")) localStorage.setItem("date", date);
   else {
-    if (day !== Number(localStorage.getItem("day"))) {
-      localStorage.setItem("day", day);
+    if (date !== Number(localStorage.getItem("date"))) {
+      localStorage.setItem("date", date);
       //SAVE REMINDERS DATA AND JOURNAL ENTRY
 
       //CLEAR DAILY REMINDERS
@@ -92,12 +105,14 @@ function checkMonth(month) {
 
 function setNumDays() {
   //sets up # of dates per month
-  if (date.getMonth() < 5 && date.getMonth() % 2 == 0) {
+  if (DATE.getMonth() < 5 && DATE.getMonth() % 2 == 0) {
     return 31;
   } else {
     return 30;
   }
 }
+
+//HABIT TRACKER
 
 function setHabitTableHeader(month) {
   for (let i = 0; i < numDays; i++) {
@@ -190,7 +205,7 @@ function createHabitCells(habitRow) {
   }
 }
 
-// TODO-LIST
+// TODO LIST
 
 function addTodo() {
   if (inputTodo.value === "") {
@@ -233,10 +248,18 @@ function saveTodoData() {
   localStorage.setItem("todo-data", JSON.stringify(todoData));
 }
 
+//GOAL
+
+function setGoal() {
+  console.log("goal changed");
+  goalStatement.innerHTML = goalInput.value;
+  goalInput.value = "";
+}
+
 //JOURNAL ENTRY
 entryText;
 
-entryDate.innerHTML = month + " " + date.getDate() + ", " + date.getFullYear();
+entryDate.innerHTML = month + " " + DATE.getDate() + ", " + DATE.getFullYear();
 
 function submitEntry() {
   localStorage.setItem("entry-data", entryText.value);
@@ -271,7 +294,7 @@ function loadData() {
 }
 
 // INITIAL
-checkDay(day);
+checkDate(date);
 checkMonth(month);
 setHabitTableHeader(month);
 loadData();
