@@ -9,6 +9,13 @@ let habitCheckbox = document.querySelectorAll(".habit-checkbox");
 let habitData = {};
 habitData = JSON.parse(localStorage.getItem("habit-data"));
 
+//GRATITUDE references
+const inputGratitude = document.querySelector(".gratitude-input");
+const gratitudeList = document.querySelector(".gratitude-list");
+let gratitudeData = [];
+if (localStorage.getItem("gratitude-data"))
+  gratitudeData = JSON.parse(localStorage.getItem("gratitude-data"));
+
 //TODO references
 const todoContainer = document.querySelector(".todo-container");
 let todoData = [];
@@ -20,6 +27,9 @@ const inputTodo = document.querySelector(".todo-input");
 //GOAL references
 const goalInput = document.querySelector(".goal-input");
 const goalStatement = document.querySelector(".goal-statement");
+let goalData = "";
+if (localStorage.getItem("goal-Data"))
+  goalData = localStorage.getItem("goal-data");
 
 //JOURNAL references
 const entryDate = document.querySelector(".entry-date");
@@ -62,7 +72,7 @@ let monthlyData = {
 //DAILY DATA OBJECT
 const dailyData = {
   _date: null,
-  _gratituityData: [],
+  _gratitudeData: [],
   _todoData: {},
   _goal: null,
   _journalEntry: "",
@@ -77,6 +87,7 @@ function checkDate(date) {
 
       //CLEAR DAILY REMINDERS
       localStorage.setItem("todo-data", "");
+      localStorage.setItem("gratitude-data", "");
       localStorage.setItem("entry-data", "");
     }
   }
@@ -88,7 +99,7 @@ function checkMonth(month) {
     if (month !== localStorage.getItem("month")) {
       //SAVE DATA OF THE WHOLE MONTH
       monthlyData._month = localStorage.getItem("month");
-      montlyData._habitData = habitData;
+      monthlyData._habitData = habitData;
       localStorage.setItem("monthly-data", JSON.stringify(monthlyData));
 
       //CLEAR HABIT LIST
@@ -205,6 +216,39 @@ function createHabitCells(habitRow) {
   }
 }
 
+//GRATITUDE LIST
+
+function addGratitude() {
+  if (inputGratitude.value === "") {
+    alert("You must write something");
+  } else {
+    let li = document.createElement("li");
+    let p = document.createElement("p");
+    gratitudeList.appendChild(li);
+    p.innerHTML = inputGratitude.value;
+    gratitudeData.push(inputGratitude.value);
+    li.appendChild(p);
+  }
+  inputGratitude.value = "";
+  saveGratitudeData();
+}
+
+function saveGratitudeData() {
+  localStorage.setItem("gratitude-data", JSON.stringify(gratitudeData));
+}
+
+function loadGratitudeData() {
+  if (gratitudeData) {
+    gratitudeData.forEach((gratitude) => {
+      let li = document.createElement("li");
+      let p = document.createElement("p");
+      gratitudeList.appendChild(li);
+      p.innerHTML = gratitude;
+      li.appendChild(p);
+      saveGratitudeData();
+    });
+  }
+}
 // TODO LIST
 
 function addTodo() {
@@ -248,12 +292,33 @@ function saveTodoData() {
   localStorage.setItem("todo-data", JSON.stringify(todoData));
 }
 
+function loadTodoData() {
+  if (todoData) {
+    todoData.forEach((todo) => {
+      let li = document.createElement("li");
+      let p = document.createElement("p");
+      todoList.appendChild(li);
+      p.innerHTML = todo;
+      li.appendChild(p);
+      let span = document.createElement("span");
+      span.innerHTML = "\u00d7";
+      li.appendChild(span);
+      saveTodoData();
+    });
+  }
+}
+
 //GOAL
 
 function setGoal() {
   console.log("goal changed");
   goalStatement.innerHTML = goalInput.value;
+  localStorage.setItem("goal-data", goalInput.value);
   goalInput.value = "";
+}
+
+function loadGoalData() {
+  goalStatement.innerHTML = localStorage.getItem("goal-data");
 }
 
 //JOURNAL ENTRY
@@ -271,26 +336,12 @@ function loadEntryData() {
 
 //INITIAL FUNCTIONS
 
-function loadTodoData() {
-  if (todoData) {
-    todoData.forEach((todo) => {
-      let li = document.createElement("li");
-      let p = document.createElement("p");
-      todoList.appendChild(li);
-      p.innerHTML = todo;
-      li.appendChild(p);
-      let span = document.createElement("span");
-      span.innerHTML = "\u00d7";
-      li.appendChild(span);
-      saveTodoData();
-    });
-  }
-}
-
 function loadData() {
   if (localStorage.getItem("habit-data")) loadHabitData();
   if (localStorage.getItem("todo-data")) loadTodoData();
   if (localStorage.getItem("entry-data")) loadEntryData();
+  if (localStorage.getItem("goal-data")) loadGoalData();
+  if (localStorage.getItem("gratitude-data")) loadGratitudeData();
 }
 
 // INITIAL

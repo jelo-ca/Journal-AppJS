@@ -7,7 +7,7 @@
 }
 
 ul {
-  padding: 0;
+  padding: 0.5rem;
 }
 
 section {
@@ -43,6 +43,7 @@ input {
   position: absolute;
   bottom: 0.2rem;
   right: 0;
+  padding: 0;
 }
 
 #nav-bar li {
@@ -122,6 +123,8 @@ td {
 #daily-reminders {
   height: 25vh;
   display: flex;
+  padding-left: 0;
+  padding-right: 0;
   justify-content: space-between;
 }
 
