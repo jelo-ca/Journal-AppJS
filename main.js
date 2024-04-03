@@ -18,7 +18,7 @@ if (localStorage.getItem("gratitude-data"))
 
 //TODO references
 const todoContainer = document.querySelector(".todo-container");
-let todoData = [];
+let todoData = {};
 if (localStorage.getItem("todo-data"))
   todoData = JSON.parse(localStorage.getItem("todo-data"));
 const todoList = document.querySelector(".todo-list");
@@ -36,6 +36,15 @@ const entryDate = document.querySelector(".entry-date");
 const entryText = document.querySelector(".entry-text");
 const entryButton = document.querySelector(".entry-button");
 let entry;
+
+//MONTHLY DATA OBJECT
+let monthlyData = {
+  _habitData: {},
+  _dailyData: {},
+};
+
+if (localStorage.getItem("monthly-data"))
+  monthlyData = JSON.parse(localStorage.getItem("monthly-data"));
 
 if (localStorage.getItem("entry-data"))
   entry = localStorage.getItem("entry-data");
@@ -62,28 +71,21 @@ let month = months[DATE.getMonth()];
 let numDays = setNumDays();
 monthHeader.innerHTML = month;
 
-//MONTHLY DATA OBJECT
-let monthlyData = {
-  _month: "",
-  _habitData: {},
-  _dailyData: {},
-};
-
-//DAILY DATA OBJECT
-const dailyData = {
-  _date: null,
-  _gratitudeData: [],
-  _todoData: {},
-  _goal: null,
-  _journalEntry: "",
-};
-
 function checkDate(date) {
   if (!localStorage.getItem("date")) localStorage.setItem("date", date);
   else {
     if (date !== Number(localStorage.getItem("date"))) {
-      localStorage.setItem("date", date);
       //SAVE REMINDERS DATA AND JOURNAL ENTRY
+      monthlyData._dailyData[localStorage.getItem("date")] = {
+        _gratitudeData: gratitudeData,
+        _todoData: todoData,
+        _goal: goalData,
+        _journalEntry: entry,
+      };
+
+      localStorage.setItem("monthly-data", JSON.stringify(monthlyData));
+
+      localStorage.setItem("date", date);
 
       //CLEAR DAILY REMINDERS
       localStorage.setItem("todo-data", "");
@@ -259,7 +261,7 @@ function addTodo() {
     let p = document.createElement("p");
     todoList.appendChild(li);
     p.innerHTML = inputTodo.value;
-    todoData.push(inputTodo.value);
+    todoData[inputTodo.value] = false;
     li.appendChild(p);
     let span = document.createElement("span");
     span.innerHTML = "\u00d7";
@@ -272,14 +274,17 @@ function addTodo() {
 todoList.addEventListener(
   "click",
   function (e) {
+    let li = e.target.closest("li");
+    let node = Array.from(li.closest("ul").children);
+    let index = node.indexOf(li);
     if (e.target.tagName === "P") {
       e.target.classList.toggle("checked");
+      todoData[Object.keys(todoData)[index]] =
+        !todoData[Object.keys(todoData)[index]];
+      console.log(todoData[Object.keys(todoData)[index]]);
     } else if (e.target.tagName === "SPAN") {
       //REMOVES FROM STORED DATA
-      let li = e.target.closest("li");
-      let node = Array.from(li.closest("ul").children);
-      let index = node.indexOf(li);
-      todoData.splice(index, 1);
+      delete todoData[Object.keys(todoData)[index]];
       //REMOVES FROM PAGE
       e.target.parentElement.remove();
     }
@@ -294,7 +299,7 @@ function saveTodoData() {
 
 function loadTodoData() {
   if (todoData) {
-    todoData.forEach((todo) => {
+    for (todo in todoData) {
       let li = document.createElement("li");
       let p = document.createElement("p");
       todoList.appendChild(li);
@@ -304,7 +309,9 @@ function loadTodoData() {
       span.innerHTML = "\u00d7";
       li.appendChild(span);
       saveTodoData();
-    });
+      //LOADS TODO CHECKS FOR APPROPRIATE TASKS
+      if (todoData[todo]) p.classList.add("checked");
+    }
   }
 }
 
