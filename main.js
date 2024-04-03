@@ -91,6 +91,9 @@ function checkDate(date) {
       localStorage.setItem("todo-data", "");
       localStorage.setItem("gratitude-data", "");
       localStorage.setItem("entry-data", "");
+
+      gratitudeData = [];
+      todoData = {};
     }
   }
 }
