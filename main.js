@@ -28,7 +28,7 @@ const inputTodo = document.querySelector(".todo-input");
 const goalInput = document.querySelector(".goal-input");
 const goalStatement = document.querySelector(".goal-statement");
 let goalData = "";
-if (localStorage.getItem("goal-Data"))
+if (localStorage.getItem("goal-data"))
   goalData = localStorage.getItem("goal-data");
 
 //JOURNAL references
@@ -82,7 +82,6 @@ function checkDate(date) {
         _goal: goalData,
         _journalEntry: entry,
       };
-
       localStorage.setItem("monthly-data", JSON.stringify(monthlyData));
 
       localStorage.setItem("date", date);
@@ -336,9 +335,23 @@ entryText;
 
 entryDate.innerHTML = month + " " + DATE.getDate() + ", " + DATE.getFullYear();
 
-function submitEntry() {
+function saveDaily() {
+  entry = entryText.value;
   localStorage.setItem("entry-data", entryText.value);
+  monthlyData._dailyData[localStorage.getItem("date")] = {
+    _gratitudeData: gratitudeData,
+    _todoData: todoData,
+    _goal: goalData,
+    _journalEntry: entry,
+  };
+  localStorage.setItem("monthly-data", JSON.stringify(monthlyData));
 }
+
+//saves entry per change in textarea
+entryText.addEventListener("input", () => {
+  entry = entryText.value;
+  localStorage.setItem("entry-data", entry);
+});
 
 function loadEntryData() {
   entryText.value = entry;
